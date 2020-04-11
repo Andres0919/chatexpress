@@ -2,7 +2,6 @@ const Model = require('./model')
 
 function addMessage(message) {
   // list.push(message)
-  console.log(':)')
   const myMessage = new Model(message)
   myMessage.save()
 }
