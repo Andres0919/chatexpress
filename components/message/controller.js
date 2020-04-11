@@ -16,6 +16,7 @@ function addMessage(user, message) {
 
     console.log('fullMessage :', fullMessage)
     store.add(fullMessage)
+    console.log('ee')
     resolve(fullMessage)
   })
 
@@ -29,7 +30,20 @@ function getMessages() {
   })
 }
 
+function updateMessage(id, message) {
+  return new Promise(async (resolve, reject) => {
+    if (!id || !message) {
+      reject('no data')
+      return false
+    }
+
+    let result = await store.updateText(id, message)
+    resolve(result)
+  })
+}
+
 module.exports = {
   addMessage,
   getMessages,
+  updateMessage,
 }

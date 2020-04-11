@@ -44,4 +44,13 @@ router.post('/', async (req, res) => {
   }
 })
 
+router.patch('/:id', async (req, res) => {
+  try {
+    let data = await controller.updateMessage(req.params.id, req.body.message)
+    response.success(req, res, data)
+  } catch (error) {
+    response.error(req, res, 'error interno', 500, error)
+  }
+})
+
 module.exports = router
