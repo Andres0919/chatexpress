@@ -1,7 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const db = require('./db')
+
 const router = require('./network/routes')
+
+db(
+  'mongodb+srv://db_user_platzichat:VmJftrAnfqIBc7YM@cluster0-baqm9.mongodb.net/platzicaht?retryWrites=true&w=majority'
+)
 
 let app = express()
 

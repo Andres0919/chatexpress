@@ -24,9 +24,9 @@ function addMessage(user, message) {
   // response.success(req, res, 'Creado correctamente')
 }
 
-function getMessages() {
+function getMessages(filterUser) {
   return new Promise((resolve, reject) => {
-    resolve(store.list())
+    resolve(store.list(filterUser))
   })
 }
 
@@ -42,8 +42,24 @@ function updateMessage(id, message) {
   })
 }
 
+function deleteMessage(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!id) {
+        reject('Id required')
+        return false
+      }
+      await store.remove(id)
+      resolve()
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
 module.exports = {
   addMessage,
   getMessages,
   updateMessage,
+  deleteMessage,
 }

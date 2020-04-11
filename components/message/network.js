@@ -13,7 +13,8 @@ router.get('/', async (req, res) => {
   //     body: 'Creado correctamente'
   // })
   try {
-    let messagesList = await controller.getMessages()
+    const filterMessages = req.query.user || null
+    let messagesList = await controller.getMessages(filterMessages)
     response.success(req, res, messagesList, 201)
   } catch (error) {
     response.error(req, res, 'Error el servicio', 500, error)
@@ -48,6 +49,15 @@ router.patch('/:id', async (req, res) => {
   try {
     let data = await controller.updateMessage(req.params.id, req.body.message)
     response.success(req, res, data)
+  } catch (error) {
+    response.error(req, res, 'error interno', 500, error)
+  }
+})
+
+router.delete('/:id', async (req, res) => {
+  try {
+    controller.deleteMessage(req.params.id)
+    response.success(req, res, `Usuario ${req.params.id} eliminado`, 200)
   } catch (error) {
     response.error(req, res, 'error interno', 500, error)
   }
