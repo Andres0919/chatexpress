@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
   //     body: 'Creado correctamente'
   // })
   try {
-    const filterMessages = req.query.user || null
+    const filterMessages = req.query.chat || null
     let messagesList = await controller.getMessages(filterMessages)
     response.success(req, res, messagesList, 201)
   } catch (error) {
@@ -30,6 +30,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     let fullMessage = await controller.addMessage(
+      req.body.chat,
       req.body.user,
       req.body.message
     )

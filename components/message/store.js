@@ -6,11 +6,20 @@ function addMessage(message) {
   myMessage.save()
 }
 
-async function getMessages(filterUser) {
-  // return list
-  let filter = {}
-  if (filterUser !== null) filter = { user: filterUser }
-  let messages = await Model.find(filter)
+function getMessages(filterChat) {
+  return new Promise((resolve, reject) => {
+    let filter = {}
+    if (filterChat !== null) filter = { chat: filterChat }
+    Model.find(filter)
+      .populate('user')
+      .exec((error, populated) => {
+        if (error) {
+          reject(error)
+          return false
+        }
+        resolve(populated)
+      })
+  })
 
   return messages
 }
