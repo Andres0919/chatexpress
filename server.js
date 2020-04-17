@@ -1,23 +1,26 @@
 const express = require('express')
+let app = express()
+const server = require('http').Server(app)
+const config = require('./config')
+
+const cors = require('cors')
 const bodyParser = require('body-parser')
-
+const socket = require('./socket')
 const db = require('./db')
-
 const router = require('./network/routes')
 
-db(
-  'mongodb+srv://db_user_platzichat:VmJftrAnfqIBc7YM@cluster0-baqm9.mongodb.net/platzicaht?retryWrites=true&w=majority'
-)
+db(config.dbUrl)
 
-let app = express()
-
+app.use(cors())
 app.use(bodyParser.json())
-// app.use(router)
+app.use(bodyParser.urlencoded({ extended: false }))
+
+socket.connect(server)
 
 router(app)
 
-app.use('/app', express.static('public'))
+app.use(`${config.publicRoute}`, express.static('public'))
 
-app.listen(3000, () => {
-  console.log('La app is running in localhost:3000')
+server.listen(config.port, () => {
+  console.log(`La app is running in localhost: ${config.host}:${config.port}`)
 })

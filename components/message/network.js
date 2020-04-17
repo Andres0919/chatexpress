@@ -1,7 +1,14 @@
 const express = require('express')
+const multer = require('multer')
+const config = require('../../config')
+
 const response = require('../../network/response')
 const controller = require('./controller')
 const router = express.Router()
+
+const upload = multer({
+  dest: `public/${config.filesRoute}/`,
+})
 
 router.get('/', async (req, res) => {
   // res.header({
@@ -27,12 +34,14 @@ router.get('/', async (req, res) => {
   // }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
   try {
+    console.log(req.file)
     let fullMessage = await controller.addMessage(
       req.body.chat,
       req.body.user,
-      req.body.message
+      req.body.message,
+      req.file
     )
     response.success(req, res, fullMessage, 201)
   } catch (error) {
